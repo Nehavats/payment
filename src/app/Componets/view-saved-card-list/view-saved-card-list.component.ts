@@ -15,6 +15,9 @@ export class ViewSavedCardListComponent implements OnInit {
   cardData : any;
   closeResult: string;
   openPopup : boolean = false;
+  removeCard: boolean;
+  cardNumber: any;
+  expMask = [ /\d/, /\d/,/\d/,/\d/, ' ','X', 'X', 'X','X', ' ', 'X', 'X', 'X', 'X',' ', /\d/, /\d/, /\d/, /\d/]
   constructor(private _commonService : CommonService,  ) { }
 
   ngOnInit(): void {
@@ -22,31 +25,33 @@ export class ViewSavedCardListComponent implements OnInit {
       this.getCardDetails();
   }
 
+  masking(data){
+return data.replace(/(?=) \d{4}(?= \d{4})/g, 'XXXX')
+  }
+
 
   getCardDetails(){
     this.cardData = JSON.parse(localStorage.getItem('CardData'));
     this._commonService.getResponse().subscribe((res :any) => {
       this.cardDetails = [...this.cardData]
-     
       console.log(this.cardDetails);
     })
    
   }
 
-  removeCardDetails(data){
-    const updatedHero = this.cardDetails.filter(item => item.cardNumber !== data);
-    localStorage.setItem('CardData', JSON.stringify(updatedHero))
-
-    this.getCardDetails();
-
-  }
 
   addCard(){
     this.openPopup = true;
   }
 
+  removeCardPopup(data){
+    this.removeCard = true;
+    this.cardNumber = data;
+  }
+
   closePopup(data){
     this.openPopup = false;
+    this.removeCard = false;
     this.getCardDetails();
   }
 

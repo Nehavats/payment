@@ -7,7 +7,7 @@
     <div class="modal-header">
         <h4 class="modal-title" 
             id="modal-basic-title">
-        
+          Add New card 
         </h4>
         <button type="button" class="close"
                 aria-label="Close" (click)=
@@ -24,23 +24,29 @@
         <div>
             <form [formGroup]="paymentForm">
             <div class="row">
-                <div class="col-12">
-                    <div class="form-group">
-                        <label>Debit card</label>
+                <div class="col-12 mb-3">
+                    <div class="form-group card_number">
+                        <label for="ccNumber">Enter Debit/ Credit Card Number</label>
                         <input maxlength="20"
                         formControlName="cardNumber"
-                        type="tel"
-                        #ccNumber
+                        id="ccNumber"
+                        type="text"
+                        [textMask]="{mask: expMask, guide : false}" 
+                        placeholder="Enter Debit/ Credit Card Number"
                         class="form-control"
-                        (keyup)="creditCardNumberSpacing()"
-                        (blur)="getCreditCardType()">
+                        (focus)="getCreditCardType()">
+                        <img src="assets\images\amex.png" *ngIf="cardType === 'amex'">
+                        <img src="assets\images\discover.png" *ngIf="cardType === 'discover'">
+                        <img src="assets\images\mastercard.png" *ngIf="cardType === 'mastercard'">
+                        <img src="assets\images\visa.png" *ngIf="cardType === 'visa'">
+                        <img src="assets\images\unknown.png" *ngIf="cardType === 'unknown'">
                         <div *ngIf="cardNumber.invalid && (cardNumber.dirty || cardNumber.touched)"
                         class="alert alert-danger">
                     
                       <div *ngIf="cardNumber.errors?.required">
                         Card Number is required.
                       </div>
-                      <div *ngIf="cardNumber.errors?.pattern">
+                      <div *ngIf="cardNumber.errors?.ValidateCard?.invalidLength || cardNumber.errors?.ValidateCard?.invalidAmexLength  ">
                         Please Enter Valid  Card Number 
                       </div>
                       
@@ -50,10 +56,11 @@
                 </div>
                 <div class="col-4">
                     <div class="form-group">
-                        <label>Expiry Month</label>
+                        <label for="expiryMonth">Expiry Month</label>
                         <select class="form-control"
-                    id="expireMonth"
+                    id="expiryMonth"
                     formControlName="expiryMonth">
+                    <option value="" disabled> MM</option>  
               <option *ngFor="let month of monthData" value="{{month.value}}">{{month.name}}</option>
             </select>
             <div *ngIf="expiryMonth.invalid && (expiryMonth.dirty || expiryMonth.touched)"
@@ -62,6 +69,9 @@
           <div *ngIf="expiryMonth.errors?.required">
             Expiry Month is required.
           </div>
+          <div *ngIf="expiryMonth.errors?.ValidateExpiry?.cardExpired">
+           Given card is expired please enter valid card 
+          </div>
           
         </div>
                     </div>
@@ -69,9 +79,10 @@
                 </div>
                 <div class="col-4">
                     <div class="form-group">
-                        <label>Expiry year</label>
-                        <select class="form-control" id="expireYear"  formControlName="expiryYear">
-                            <option *ngFor="let year of yearData" value="{{year}}">{{year}}</option>
+                        <label for="expiryYear">Expiry year</label>
+                        <select class="form-control" id="expiryYear" aria-placeholder="YY"  formControlName="expiryYear">
+                          <option value="" disabled>YY</option>  
+                          <option *ngFor="let year of yearData" value="{{year}}">{{year}}</option>
                           </select>
                           <div *ngIf="expiryYear.invalid && (expiryYear.dirty || expiryYear.touched)"
                           class="alert alert-danger">
@@ -79,15 +90,18 @@
                         <div *ngIf="expiryYear.errors?.required">
                           Expiry Year is required.
                         </div>
+                        <div *ngIf="expiryYear.errors?.ValidateExpiry?.cardExpired">
+                          Given card is expired please enter valid card 
+                         </div>
                       
                       </div>
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="form-group">
-                        <label>CVV</label>
-                        <input type="number" maxlength="4"
-                        formControlName="cvvNumber"
+                        <label for="cvv">CVV</label>
+                        <input  maxlength="4"
+                        formControlName="cvvNumber" id="cvv" placeholder="CVV"
                         class="form-control">
                         <div *ngIf="cvvNumber.invalid && (cvvNumber.dirty || cvvNumber.touched)"
                         class="alert alert-danger">
@@ -95,13 +109,16 @@
                       <div *ngIf="cvvNumber.errors?.required">
                         Cvv Number is required.
                       </div>
+                      <div *ngIf="cvvNumber.errors?.pattern">
+                        Please enter valid Cvv Number
+                      </div>
                       
                     </div>
                     </div>
         
                 </div>
-                <div class="col-12">
-                    <button class="btn btn-lg btn-outline-primary" [disabled]="paymentForm.invalid" (click)="submitCard(); modal.dismiss('Save click')">Add Card</button>
+                <div class="col-12 mt-3">
+                    <button class="btn btn-lg btn-primary" [disabled]="paymentForm.invalid" (click)="submitCard(); modal.dismiss('Save click')">Add Card</button>
                 </div>
         
             </div>

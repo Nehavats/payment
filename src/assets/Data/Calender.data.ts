@@ -7,39 +7,39 @@ export interface MonthValues
 export const months: Array<MonthValues> = [
   {
     name: 'Jan-1',
-    value: '1',
+    value: '01',
   },
   {
     name: 'Feb-2',
-    value: '2',
+    value: '02',
   },
   {
     name: 'Mar-3',
-    value: '3',
+    value: '03',
   },
   {
     name: 'Apr-4',
-    value: '4',
+    value: '04',
   },
   {
     name: 'May-5',
-    value: '5',
+    value: '05',
   },
   {
     name: 'Jun-6',
-    value: '6',
+    value: '06',
   },
   {
     name: 'Jul-7',
-    value: '7',
+    value: '07',
   },
   {
     name: 'Aug-8',
-    value: '8',
+    value: '08',
   },
   {
     name: 'Sep-9',
-    value: '9',
+    value: '09',
   },
   {
     name: 'Oct-10',

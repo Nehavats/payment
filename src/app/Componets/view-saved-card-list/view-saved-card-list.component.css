@@ -24,7 +24,8 @@
 
   .list-item__label {
       font-size: 12px;
-      color: #eee;
+      color: #ccc;
+      font-weight: bold;
   }
 
   

@@ -8,7 +8,7 @@
                         <div class="list-item">
                             <div class="list-item__date">
                                 <label class="list-item__label">Debit Card Number</label>
-                                <div>{{card.cardNumber}}</div>
+                                <div>{{masking(card.cardNumber)}}</div>
                             </div>
                             <div class="list-item__description">
                                 <img src="assets\images\amex.png" *ngIf="card?.cardType === 'amex'">
@@ -21,19 +21,15 @@
                     </div>
                     <div class="col-4">
                         <div class="button-div">
-                            
-                            
-                            <button class="btn btn-outline-dark" (click)="removeCardDetails(card.cardNumber)">Remove</button>
-                        
-                        
+                            <button class="btn btn-lg btn-outline-primary" (click)="removeCardPopup(card.cardNumber)">Remove</button>
                         </div>
                     </div>
                 </div>
 
                 <div>
-                    <button class="btn btn-lg btn-outline-primary" 
+                    <button class="btn btn-lg btn-primary" 
                     (click)="addCard()">
-                Add Card
+                Add New Card
                 </button>
                 </div>
             </div>
@@ -44,3 +40,4 @@
 </div>
 
 <app-add-card-details *ngIf="openPopup" [openPopup]="openPopup" (refreshList)="closePopup($event)"></app-add-card-details>
+<app-remove-card-details  *ngIf="removeCard" [cardNumber]="cardNumber" (refreshList)="closePopup($event)"></app-remove-card-details>

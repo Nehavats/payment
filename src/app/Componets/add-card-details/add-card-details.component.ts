@@ -1,11 +1,12 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import {
   months,
   years
 } from '../../../assets/Data/Calender.data';
 import {NgbModal, ModalDismissReasons} 
       from '@ng-bootstrap/ng-bootstrap';
+import { templateJitUrl } from '@angular/compiler';
 
 
 
@@ -19,6 +20,7 @@ export class AddCardDetailsComponent implements OnInit, OnChanges {
  
   @ViewChild('content', { static: true }) contentData: ElementRef;
   @ViewChild('ccNumber',  { static: false }) ccNumberField: ElementRef;
+  cardType : string = 'unknown';
 
   @Input() openPopup =  '';
   @Output() refreshList = new EventEmitter();
@@ -28,6 +30,7 @@ export class AddCardDetailsComponent implements OnInit, OnChanges {
   data: any;
   formValue: any;
   closeResult: string;
+  expMask = [ /\d/, /\d/,/\d/,/\d/, ' ', /\d/, /\d/, /\d/,/\d/, ' ', /\d/, /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/, /\d/]
   
 
   constructor( private fb: FormBuilder, private modalService: NgbModal,) {}
@@ -45,15 +48,70 @@ export class AddCardDetailsComponent implements OnInit, OnChanges {
 
   ngOnInit(){
     this.paymentForm = this.fb.group({
-      cardNumber: ['', [Validators.required, Validators.pattern('^[ 0-9]*$'), Validators.minLength(17)]],
-      cvvNumber : ['', Validators.required,],
-      expiryMonth : ['', Validators.required],
-      expiryYear: ['', Validators.required],
+      cardNumber: ['', [Validators.required, this.validateCard.bind(this)]],
+      cvvNumber : ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
+      expiryMonth : ['', [Validators.required, this.validateExpiry.bind(this)]],
+      expiryYear: ['', [Validators.required, this.validateExpiry.bind(this)]],
       cardType : ['unknown']
     })
   }
-  ngAfterViewInit() {
+
+
+  validateExpiry(c : FormControl):{[error : string]: any} {
    
+
+    if(!c.dirty) {
+      return null;
+    }
+    let expMonth = this.paymentForm.get('expiryMonth').value;
+    let expYear = this.paymentForm.get('expiryYear').value;
+
+    if(expMonth === ""  || expYear === "") {
+      return null;
+    }
+    const year = 2000;
+    const givenYear = year + parseInt(expYear, 10);
+    const d = new Date();
+    const currentYear  = d.getFullYear();
+    if(expYear < currentYear || (givenYear === currentYear && expMonth < d.getMonth() +1)) {
+        return {
+          ValidateExpiry : {
+            cardExpired : true,
+          }
+        };
+    }
+  }
+
+
+  validateCard(c : FormControl) : {[error : string]: any}{
+    if(!c.dirty) {
+      return null;
+    }
+    const temp = c.value.replace(/[\s]+/ig, '');
+    let type = this.paymentForm.get('cardType').value;
+
+    if(type === 'unknown' && temp.length>4) {
+      this.getCreditCardType();
+      type= this.paymentForm.get('cardType').value;
+    }
+
+    if(temp.length !== 16 && type !== 'amex'){
+      return {
+        ValidateCard : {
+          invalidLength : true,
+        }
+      };
+    }
+
+
+    if(temp.length !== 15 && type === 'amex') {
+      return {
+        ValidateCard : {
+          invalidAmexLength : true,
+        }
+      };
+    }
+
   }
 
 
@@ -94,6 +152,10 @@ export class AddCardDetailsComponent implements OnInit, OnChanges {
 
 
 
+
+
+
+
   getCreditCardType() { 
 
     const creditCardNumber = this.paymentForm.controls.cardNumber.value.replace(/\s+/g, '');
@@ -103,45 +165,37 @@ export class AddCardDetailsComponent implements OnInit, OnChanges {
     // first check for MasterCard
     if (/^5[1-5]/.test(creditCardNumber)) {
       result = "mastercard";
+      this.cardType ="mastercard";
     } 
     // then check for Visa
     else if (/^4/.test(creditCardNumber)) {
       result = "visa";
+      this.cardType = "visa";
     }
     // then check for AmEx
     else if (/^3[47]/.test(creditCardNumber)) {
       result = "amex";
+      this.cardType = "amex";
     } 
     // then check for Diners
     else if (/3(?:0[0-5]|[68][0-9])[0-9]{11}/.test(creditCardNumber)) { 
       result = "diners"
+      this.cardType = 'diners';
     }
     // then check for Discover
     else if (/6(?:011|5[0-9]{2})[0-9]{12}/.test(creditCardNumber)) {
       result = "discover";
+      this.cardType = "discover";
     } 
  
     this.paymentForm.patchValue({
       cardType: result
    });
-   this.getMaskType(result);
+   //this.getMaskType(result);
     return console.log(result);
   }
 
 
-  getMaskType(cardType){
-    var masks = {
-      'mastercard': '9999 9999 9999 9999',
-      'visa': '9999 9999 9999 9999',
-      'amex': '9999 999999 99999',
-      'diners': '9999 9999 9999 99',
-      'discover': '9999 9999 9999 9999',
-      'unknown': '9999 9999 9999 9999'
-    };
-    //return masks[cardType];,
-    const { cardNumber } = this.paymentForm.controls;
-    cardNumber.setValue(masks[cardType]);
-  }
 
 
 
