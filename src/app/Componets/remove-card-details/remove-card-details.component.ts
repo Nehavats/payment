@@ -7,10 +7,11 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./remove-card-details.component.css']
 })
 export class RemoveCardDetailsComponent implements OnInit {
-  cardData: any;
+ 
   @ViewChild('content', { static: true }) contentData: ElementRef;
   @Output() refreshList = new EventEmitter();
   @Input() cardNumber =  '';
+  cardData: any ;
   closeResult: string;
 
   constructor(private modalService: NgbModal,) { }
@@ -18,7 +19,6 @@ export class RemoveCardDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.cardData = JSON.parse(localStorage.getItem('CardData'));
   }
-
 
   ngOnChanges(){
     if(this.cardNumber) {
@@ -31,7 +31,7 @@ export class RemoveCardDetailsComponent implements OnInit {
   removeCardDetails(){
     const updatedHero = this.cardData.filter(item => item.cardNumber !== this.cardNumber);
     localStorage.setItem('CardData', JSON.stringify(updatedHero))
-this.getDismissReason('remove succesffully');
+    this.getDismissReason('remove succesffully');
    
 
   }
@@ -49,15 +49,12 @@ this.getDismissReason('remove succesffully');
   }
   
   private getDismissReason(reason: any): string {
-  
+    this.refreshList.emit("true");
     if (reason === ModalDismissReasons.ESC) {
-      //this.refreshList.emit("true");
-     // return 'by pressing ESC';
+     return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      //this.refreshList.emit("true");
-     // return 'by clicking on a backdrop';
+     return 'by clicking on a backdrop';
     } else {
-      this.refreshList.emit("true");
       return `with: ${reason}`;
     }
   

@@ -1,8 +1,3 @@
-
-
-
-
-
 <ng-template #content let-modal>
     <div class="modal-header">
         <h4 class="modal-title" 
@@ -19,8 +14,6 @@
         </button>
     </div>
     <div class="modal-body">
-
-
         <div>
             <form [formGroup]="paymentForm">
             <div class="row">
@@ -39,7 +32,6 @@
                         <img src="assets\images\discover.png" *ngIf="cardType === 'discover'">
                         <img src="assets\images\mastercard.png" *ngIf="cardType === 'mastercard'">
                         <img src="assets\images\visa.png" *ngIf="cardType === 'visa'">
-                        <img src="assets\images\unknown.png" *ngIf="cardType === 'unknown'">
                         <div *ngIf="cardNumber.invalid && (cardNumber.dirty || cardNumber.touched)"
                         class="alert alert-danger">
                     
@@ -112,21 +104,21 @@
                       <div *ngIf="cvvNumber.errors?.pattern">
                         Please enter valid Cvv Number
                       </div>
-                      
+                      <div *ngIf="cvvNumber.errors?.minlength">
+                        Cvv  can't be less than 3 number
+                      </div>
                     </div>
                     </div>
-        
+                </div>
+                <div class=" mt-4 alert alert-danger" *ngIf="dublicateCard">
+                    This Card is available in Your wallet . Kindly add different card .
                 </div>
                 <div class="col-12 mt-3">
-                    <button class="btn btn-lg btn-primary" [disabled]="paymentForm.invalid" (click)="submitCard(); modal.dismiss('Save click')">Add Card</button>
+                    <button class="btn btn-lg btn-primary" [disabled]="paymentForm.invalid" (click)="submitCard()">Add Card</button>
                 </div>
-        
             </div>
-          
-           
             </form>
         </div>
-      
     </div>
 </ng-template>
 
