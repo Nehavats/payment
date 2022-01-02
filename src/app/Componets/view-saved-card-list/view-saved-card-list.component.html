@@ -1,4 +1,7 @@
 <div class="main-container">
+    <div class="mb-4 alert alert-danger" *ngIf="dublicateCard">
+        This Card is available in Your wallet . Kindly add different card .
+    </div>
     <div class="payment-wallet">
         <h3>My Wallet</h3>
         <div class="card mr-5">
@@ -6,7 +9,7 @@
                 <div class="row" *ngFor="let card of cardDetails">
                     <div class="col-8">
                         <div class="list-item">
-                            <div class="list-item__date">
+                            <div>
                                 <label class="list-item__label">Debit Card Number</label>
                                 <div>{{masking(card.cardNumber)}}</div>
                             </div>

@@ -81,9 +81,14 @@ export class AddCardDetailsComponent implements OnInit, OnChanges {
     let type = this.paymentForm.get('cardType').value;
 
     if(type === 'unknown' && temp.length>4) {
-      this.getCreditCardType();
-      type= this.paymentForm.get('cardType').value;
+      return {
+        ValidateCard : {
+          invalidCard : true,
+        }
+      };
     }
+
+    
 
     if(temp.length !== 16 && type !== 'amex'){
       return {
@@ -159,23 +164,17 @@ export class AddCardDetailsComponent implements OnInit, OnChanges {
         this.dublicateCard = false;
              cardData = [this.formValue , ...cardData];
              localStorage.setItem('CardData', JSON.stringify(cardData))
-             this.closeResult = 
-       `Dismissed ${this.getDismissReason('Cross click')}`;
-           }
+            }
      
     } else {
         cardData.push(this.formValue);
         localStorage.setItem('CardData', JSON.stringify(cardData))
-        this.closeResult = 
-       `Dismissed ${this.getDismissReason('Cross click')}`;
     }
-   
-    
+ 
   }
 
 
   get cardNumber() { return this.paymentForm.get('cardNumber'); }
-
 get expiryMonth() { return this.paymentForm.get('expiryMonth'); }
 get expiryYear() { return this.paymentForm.get('expiryYear'); }
 get cvvNumber() { return this.paymentForm.get('cvvNumber'); }
@@ -192,7 +191,7 @@ open(content) {
 }
 
 private getDismissReason(reason: any): string {
-  this.refreshList.emit("true");
+  this.refreshList.emit({refreshList : true, dublicateCard : this.dublicateCard});
   if (reason === ModalDismissReasons.ESC) {
    return 'by pressing ESC';
   } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {

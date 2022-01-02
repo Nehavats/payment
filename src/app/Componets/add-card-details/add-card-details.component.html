@@ -38,9 +38,10 @@
                       <div *ngIf="cardNumber.errors?.required">
                         Card Number is required.
                       </div>
-                      <div *ngIf="cardNumber.errors?.ValidateCard?.invalidLength || cardNumber.errors?.ValidateCard?.invalidAmexLength  ">
+                      <div *ngIf="cardNumber.errors?.ValidateCard?.invalidLength || cardNumber.errors?.ValidateCard?.invalidAmexLength || cardNumber.errors?.ValidateCard?.invalidCard">
                         Please Enter Valid  Card Number 
-                      </div>
+                      </div> 
+                    
                       
                     </div>
                     </div>
@@ -110,11 +111,9 @@
                     </div>
                     </div>
                 </div>
-                <div class=" mt-4 alert alert-danger" *ngIf="dublicateCard">
-                    This Card is available in Your wallet . Kindly add different card .
-                </div>
+                
                 <div class="col-12 mt-3">
-                    <button class="btn btn-lg btn-primary" [disabled]="paymentForm.invalid" (click)="submitCard()">Add Card</button>
+                    <button class="btn btn-lg btn-primary" [disabled]="paymentForm.invalid" (click)="submitCard(); modal.dismiss('Cross click')">Add Card</button>
                 </div>
             </div>
             </form>

@@ -49,7 +49,7 @@ export class RemoveCardDetailsComponent implements OnInit {
   }
   
   private getDismissReason(reason: any): string {
-    this.refreshList.emit("true");
+    this.refreshList.emit({refreshList : true,});
     if (reason === ModalDismissReasons.ESC) {
      return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {

@@ -16,6 +16,7 @@ export class ViewSavedCardListComponent implements OnInit {
   openPopup : boolean = false;
   removeCard: boolean = false;
   cardNumber: any;
+  dublicateCard : boolean = false;
   constructor(private _commonService : CommonService,) { }
 
   ngOnInit(): void {
@@ -45,9 +46,10 @@ export class ViewSavedCardListComponent implements OnInit {
     this.cardNumber = data;
   }
 
-  closePopup(data){
+  closePopup({refreshList, dublicateCard}){
     this.openPopup = false;
     this.removeCard = false;
+    this.dublicateCard = dublicateCard;
     this.getCardDetails();
   }
 
