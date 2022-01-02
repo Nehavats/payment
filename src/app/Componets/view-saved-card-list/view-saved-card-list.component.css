@@ -8,7 +8,6 @@
     padding: 0.5rem;
     margin: 1rem 0;
     border-radius: 1px;
-  
   }
   
   .list-item__description {
@@ -28,8 +27,16 @@
       font-weight: bold;
   }
 
-  
-  
+  .button-div {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 30px;
+  }
+
+  .main-container {
+    margin: 150px;
+  }
+
   @media (min-width: 580px) {
     .list-item__description {
       flex-direction: row;
@@ -41,16 +48,18 @@
     .list-item__description h2 {
       font-size: 1.25rem;
     }
+ 
+  }
+
+  @media only screen and (max-width: 600px) {  
+     .main-container {
+    margin: 0;
+    font-size: 12.9px;
+   
+  }
+
+  img {
+    height: 14px;
+  }
+}
   
-  }
-
-
-  .button-div {
-    display: flex;
-    justify-content: space-evenly;
-    margin: 30px;
-  }
-
-  .main-container {
-    margin: 150px;
-  }
