@@ -1,0 +1,46 @@
+<div class="main-container">
+    <div class="payment-wallet">
+        <h3>My Wallet</h3>
+        <div class="card mr-5">
+            <div class="card-body">
+                <div class="row" *ngFor="let card of cardDetails">
+                    <div class="col-8">
+                        <div class="list-item">
+                            <div class="list-item__date">
+                                <label class="list-item__label">Debit Card Number</label>
+                                <div>{{card.cardNumber}}</div>
+                            </div>
+                            <div class="list-item__description">
+                                <img src="assets\images\amex.png" *ngIf="card?.cardType === 'amex'">
+                                <img src="assets\images\discover.png" *ngIf="card?.cardType === 'discover'">
+                                <img src="assets\images\mastercard.png" *ngIf="card?.cardType === 'mastercard'">
+                                <img src="assets\images\visa.png" *ngIf="card?.cardType === 'visa'">
+                                <img src="assets\images\unknown.png" *ngIf="card?.cardType === 'unknown'">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="button-div">
+                            
+                            
+                            <button class="btn btn-outline-dark" (click)="removeCardDetails(card.cardNumber)">Remove</button>
+                        
+                        
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <button class="btn btn-lg btn-outline-primary" 
+                    (click)="addCard()">
+                Add Card
+                </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<app-add-card-details *ngIf="openPopup" [openPopup]="openPopup" (refreshList)="closePopup($event)"></app-add-card-details>

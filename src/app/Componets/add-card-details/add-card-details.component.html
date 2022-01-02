@@ -1,0 +1,120 @@
+
+
+
+
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" 
+            id="modal-basic-title">
+        
+        </h4>
+        <button type="button" class="close"
+                aria-label="Close" (click)=
+                "modal.dismiss('Cross click')">
+  
+            <span aria-hidden="true">
+                ×
+            </span>
+        </button>
+    </div>
+    <div class="modal-body">
+
+
+        <div>
+            <form [formGroup]="paymentForm">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <label>Debit card</label>
+                        <input maxlength="20"
+                        formControlName="cardNumber"
+                        type="tel"
+                        #ccNumber
+                        class="form-control"
+                        (keyup)="creditCardNumberSpacing()"
+                        (blur)="getCreditCardType()">
+                        <div *ngIf="cardNumber.invalid && (cardNumber.dirty || cardNumber.touched)"
+                        class="alert alert-danger">
+                    
+                      <div *ngIf="cardNumber.errors?.required">
+                        Card Number is required.
+                      </div>
+                      <div *ngIf="cardNumber.errors?.pattern">
+                        Please Enter Valid  Card Number 
+                      </div>
+                      
+                    </div>
+                    </div>
+        
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label>Expiry Month</label>
+                        <select class="form-control"
+                    id="expireMonth"
+                    formControlName="expiryMonth">
+              <option *ngFor="let month of monthData" value="{{month.value}}">{{month.name}}</option>
+            </select>
+            <div *ngIf="expiryMonth.invalid && (expiryMonth.dirty || expiryMonth.touched)"
+            class="alert alert-danger">
+        
+          <div *ngIf="expiryMonth.errors?.required">
+            Expiry Month is required.
+          </div>
+          
+        </div>
+                    </div>
+        
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label>Expiry year</label>
+                        <select class="form-control" id="expireYear"  formControlName="expiryYear">
+                            <option *ngFor="let year of yearData" value="{{year}}">{{year}}</option>
+                          </select>
+                          <div *ngIf="expiryYear.invalid && (expiryYear.dirty || expiryYear.touched)"
+                          class="alert alert-danger">
+                      
+                        <div *ngIf="expiryYear.errors?.required">
+                          Expiry Year is required.
+                        </div>
+                      
+                      </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label>CVV</label>
+                        <input type="number" maxlength="4"
+                        formControlName="cvvNumber"
+                        class="form-control">
+                        <div *ngIf="cvvNumber.invalid && (cvvNumber.dirty || cvvNumber.touched)"
+                        class="alert alert-danger">
+                    
+                      <div *ngIf="cvvNumber.errors?.required">
+                        Cvv Number is required.
+                      </div>
+                      
+                    </div>
+                    </div>
+        
+                </div>
+                <div class="col-12">
+                    <button class="btn btn-lg btn-outline-primary" [disabled]="paymentForm.invalid" (click)="submitCard(); modal.dismiss('Save click')">Add Card</button>
+                </div>
+        
+            </div>
+          
+           
+            </form>
+        </div>
+      
+    </div>
+</ng-template>
+
+
+
+
+  
+
