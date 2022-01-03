@@ -1,6 +1,8 @@
 
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from 'src/app/Service/common.service';
+import { CardData } from 'src/assets/Data/cardData';
+
 
 
 @Component({
@@ -15,7 +17,7 @@ export class ViewSavedCardListComponent implements OnInit {
   closeResult: string;
   openPopup : boolean = false;
   removeCard: boolean = false;
-  cardNumber: any;
+  cardNumber: [CardData];
   dublicateCard : boolean = false;
   constructor(private _commonService : CommonService,) { }
 

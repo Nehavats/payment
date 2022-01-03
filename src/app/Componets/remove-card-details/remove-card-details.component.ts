@@ -1,5 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { CardData } from 'src/assets/Data/cardData';
+
 
 @Component({
   selector: 'app-remove-card-details',
@@ -11,7 +13,7 @@ export class RemoveCardDetailsComponent implements OnInit {
   @ViewChild('content', { static: true }) contentData: ElementRef;
   @Output() refreshList = new EventEmitter();
   @Input() cardNumber =  '';
-  cardData: any ;
+  cardData: [CardData] ;
   closeResult: string;
 
   constructor(private modalService: NgbModal,) { }
@@ -23,7 +25,6 @@ export class RemoveCardDetailsComponent implements OnInit {
   ngOnChanges(){
     if(this.cardNumber) {
     this.open(this.contentData);
-    console.log();
     }
   }
 

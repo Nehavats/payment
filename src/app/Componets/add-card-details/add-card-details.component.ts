@@ -21,7 +21,7 @@ export class AddCardDetailsComponent implements OnInit, OnChanges {
   @Output() refreshList = new EventEmitter();
   monthData = months;
   yearData = years;
-  formValue: any;
+  formValue: {};
   closeResult: string;
   dublicateCard : boolean = false;
   expMask = [ /\d/, /\d/,/\d/,/\d/, ' ', /\d/, /\d/, /\d/,/\d/, ' ', /\d/, /\d/, /\d/, /\d/,' ', /\d/, /\d/, /\d/, /\d/]
@@ -33,7 +33,6 @@ export class AddCardDetailsComponent implements OnInit, OnChanges {
   ngOnChanges(){
     if(this.openPopup) {
     this.open(this.contentData);
-    console.log();
     }
   }
 
@@ -154,7 +153,7 @@ export class AddCardDetailsComponent implements OnInit, OnChanges {
     if(localStorage.getItem('CardData')){
       cardData = JSON.parse(localStorage.getItem('CardData'));
       cardData.forEach(item => {
-        if(item.cardNumber === this.formValue.cardNumber) {
+        if(item.cardNumber === this.formValue['cardNumber']) {
           this.dublicateCard = true;
           temp++;
         }
